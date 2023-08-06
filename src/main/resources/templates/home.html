@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista zadań</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<h2>Lista zadań, które są do zrobienia: </h2>
+</br>
+<h5>Wysoki priorytet</h5>
+<ul class="list-group">
+    <li class="list-group-item" th:each="taskHigh : ${tasksHigh}">
+        <form th:action="@{/task/info}" method="post">
+            <input type="hidden" name="taskId" th:value="${taskHigh.id}"/>
+            <input class="form-check-input me-1" type="checkbox" th:checked="${taskHigh.taskDone}"
+                   id="firstCheckbox" onclick="this.form.submit()">
+            <label class="form-check-label" for="firstCheckbox" th:text="${taskHigh.getName()}"></label>
+            <a th:href="@{|/task/edit/${taskHigh.id}|}">Edytuj</a>
+        </form>
+    </li>
+</ul>
+</br>
+<h5>Średni priorytet</h5>
+<ul class="list-group">
+    <li class="list-group-item" th:each="taskMedium : ${tasksMedium}">
+        <form th:action="@{/task/info}" method="post">
+            <input type="hidden" name="taskId" th:value="${taskMedium.id}"/>
+            <input class="form-check-input me-1" type="checkbox" th:checked="${taskMedium.taskDone}"
+                   id="secondCheckbox" onclick="this.form.submit()">
+            <label class="form-check-label" for="secondCheckbox" th:text="${taskMedium.getName()}"></label>
+            <a th:href="@{|/task/edit/${taskMedium.id}|}">Edytuj</a>
+        </form>
+    </li>
+</ul>
+</br>
+<h5>Niski priorytet</h5>
+<ul class="list-group">
+    <li class="list-group-item" th:each="taskLow : ${tasksLow}">
+        <form th:action="@{/task/info}" method="post">
+            <input type="hidden" name="taskId" th:value="${taskLow.id}"/>
+            <input class="form-check-input me-1" type="checkbox" th:checked="${taskLow.taskDone}"
+                   id="thirdCheckbox" onclick="this.form.submit()">
+            <label class="form-check-label" for="thirdCheckbox" th:text="${taskLow.getName()}"></label>
+            <a th:href="@{|/task/edit/${taskLow.id}|}">Edytuj</a>
+        </form>
+    </li>
+</ul>
+
+</br>
+<a th:href="@{/add}">Dodaj nowe zadanie</a>
+
+</br></br>
+<h2>Lista zadań już wykonanych: </h2>
+<ul class="list-group">
+    <li th:each="taskDone : ${tasksDone}" class="list-group-item" th:text="${taskDone.name}"></li>
+</ul>
+
+
+</body>
+</html>
