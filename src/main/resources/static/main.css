@@ -1,0 +1,27 @@
+.footer {
+    position:absolute;
+    left:0;
+    bottom:0;
+    height:27px;
+    width:100%;
+    background-color:gray;
+    color: lightgrey;
+    text-align: center;
+}
+
+body {
+    background-color: lightgrey;
+}
+
+.header {
+    background-position: center;
+    height: 120px;
+    background-color: gray;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+

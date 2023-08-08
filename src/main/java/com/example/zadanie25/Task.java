@@ -11,7 +11,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private boolean taskDone;
+    private boolean done;
 
     private int duration;
 
@@ -30,7 +30,7 @@ public class Task {
     }
 
     public Task() {
-        taskDone = false;
+        done = false;
         duration = 0;
         completionDate = null;
     }
@@ -43,12 +43,12 @@ public class Task {
         this.name = name;
     }
 
-    public boolean isTaskDone() {
-        return taskDone;
+    public boolean isDone() {
+        return done;
     }
 
-    public void setTaskDone(boolean taskDone) {
-        this.taskDone = taskDone;
+    public void setDone(boolean taskDone) {
+        this.done = taskDone;
     }
 
     public Priority getPriority() {

@@ -8,5 +8,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findAllByPriorityIs(Priority priority);
 
-    List<Task> findAllByTaskDoneIsTrue();
+    List<Task> findAllByDoneIsTrueOrderByCompletionDate();
 }

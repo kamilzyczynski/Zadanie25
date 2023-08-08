@@ -24,11 +24,11 @@ public class TaskController {
         List<Task> tasksHigh = taskRepository.findAllByPriorityIs(Priority.HIGH);
         List<Task> tasksMedium = taskRepository.findAllByPriorityIs(Priority.MEDIUM);
         List<Task> tasksLow = taskRepository.findAllByPriorityIs(Priority.LOW);
-        List<Task> tasksDone = taskRepository.findAllByTaskDoneIsTrue();
+
         model.addAttribute("tasksHigh", tasksHigh);
         model.addAttribute("tasksMedium", tasksMedium);
         model.addAttribute("tasksLow", tasksLow);
-        model.addAttribute("tasksDone", tasksDone);
+
         return "home";
     }
 
@@ -37,6 +37,14 @@ public class TaskController {
 
         model.addAttribute("task", new Task());
         return "addTask";
+    }
+
+    @GetMapping("/archive")
+    public String showDoneTasks(Model model) {
+        List<Task> tasksDone = taskRepository.findAllByDoneIsTrueOrderByCompletionDate();
+        model.addAttribute("tasksDone", tasksDone);
+
+        return "archive";
     }
 
     @GetMapping("/task/edit/{id}")
@@ -84,7 +92,7 @@ public class TaskController {
 
         if (taskById.isPresent()) {
             Task task = taskById.get();
-            task.setTaskDone(true);
+            task.setDone(true);
             task.setPriority(null);
             taskRepository.save(task);
         }

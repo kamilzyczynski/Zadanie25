@@ -2,7 +2,7 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista zadań</title>
+    <title>Archiwum zadań</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
@@ -13,25 +13,29 @@
 <div th:replace="header-common :: header"></div>
 <body>
 <div class="container">
+    <h2>Lista wykonanych zadań: </h2>
 
-    </br>
-    <h2>Lista zadań, które są do zrobienia: </h2>
-    </br>
-    <h5>Wysoki priorytet</h5>
-    <div th:replace="fragments :: task-list(tasks=${tasksHigh})"></div>
-    </br>
-    <h5>Średni priorytet</h5>
-    <div th:replace="fragments :: task-list(tasks=${tasksMedium})"></div>
-    </br>
-    <h5>Niski priorytet</h5>
-    <div th:replace="fragments :: task-list(tasks=${tasksLow})"></div>
-    </br>
-    <a th:href="@{/add}">Dodaj nowe zadanie</a>
-    </br>
-    <a th:href="@{/archive}">Archiwum wykonanych zadań</a>
-    </br></br>
 
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Nazwa zadania</th>
+            <th scope="col">Czas trwania w minutach</th>
+            <th scope="col">Data wykonania</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasksDone}">
+            <td th:text="${task.name}"></td>
+            <td th:text="${task.duration}"></td>
+            <td th:text="${task.completionDate}"></td>
+        </tr>
+        </tbody>
+    </table>
+    </br>
+    <a th:href="@{/}">Powrót do strony głównej</a>
     <div th:replace="footer-common :: footer"></div>
+
 </div>
 
 </body>
