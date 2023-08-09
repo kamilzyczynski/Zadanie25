@@ -15,7 +15,7 @@ public class Task {
 
     private int duration;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate completionDate;
 
     @Enumerated(EnumType.STRING)

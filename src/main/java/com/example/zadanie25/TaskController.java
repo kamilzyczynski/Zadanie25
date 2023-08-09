@@ -2,13 +2,13 @@ package com.example.zadanie25;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class TaskController {
@@ -20,14 +20,17 @@ public class TaskController {
 
     @GetMapping("/")
     public String main(Model model) {
+//
+//        List<Task> tasksHigh = taskRepository.findAllByPriorityIs(Priority.HIGH);
+//        List<Task> tasksMedium = taskRepository.findAllByPriorityIs(Priority.MEDIUM);
+//        List<Task> tasksLow = taskRepository.findAllByPriorityIs(Priority.LOW);
+        Map<Priority, List<Task>> collect = taskRepository.findAllByDoneIsFalse()
+                .stream()
+                .collect(Collectors.groupingBy(Task::getPriority));
 
-        List<Task> tasksHigh = taskRepository.findAllByPriorityIs(Priority.HIGH);
-        List<Task> tasksMedium = taskRepository.findAllByPriorityIs(Priority.MEDIUM);
-        List<Task> tasksLow = taskRepository.findAllByPriorityIs(Priority.LOW);
-
-        model.addAttribute("tasksHigh", tasksHigh);
-        model.addAttribute("tasksMedium", tasksMedium);
-        model.addAttribute("tasksLow", tasksLow);
+        model.addAttribute("tasksHigh", collect.getOrDefault(Priority.HIGH, Collections.emptyList()));
+        model.addAttribute("tasksMedium", collect.getOrDefault(Priority.MEDIUM, Collections.emptyList()));
+        model.addAttribute("tasksLow", collect.getOrDefault(Priority.LOW, Collections.emptyList()));
 
         return "home";
     }
@@ -73,9 +76,9 @@ public class TaskController {
         return "redirect:/";
     }
 
-    @PostMapping("/task/info")
-    public String showtaskInfoForm(@RequestParam("taskId") Long taskId, Model model) {
-        Optional<Task> taskById = taskRepository.findById(taskId);
+    @GetMapping("/task/info/{id}")
+    public String showtaskInfoForm(@PathVariable Long id, Model model) {
+        Optional<Task> taskById = taskRepository.findById(id);
 
         if (taskById.isPresent()) {
             Task task = taskById.get();
@@ -86,15 +89,16 @@ public class TaskController {
         return "redirect:/";
     }
 
-    @PostMapping("/task/save")
-    public String saveTask(@RequestParam("taskId") Long taskId) {
-        Optional<Task> taskById = taskRepository.findById(taskId);
+    @PostMapping("/task/save/{id}")
+    public String saveTask(@RequestParam("taskId") Long id, @ModelAttribute Task task) {
+        Optional<Task> taskById = taskRepository.findById(id);
 
         if (taskById.isPresent()) {
-            Task task = taskById.get();
-            task.setDone(true);
-            task.setPriority(null);
-            taskRepository.save(task);
+            Task taskToSave = taskById.get();
+            taskToSave.setDone(true);
+            taskToSave.setDuration(task.getDuration());
+            taskToSave.setCompletionDate(task.getCompletionDate());
+            taskRepository.save(taskToSave);
         }
         return "redirect:/";
     }
